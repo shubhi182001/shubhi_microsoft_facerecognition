@@ -6,6 +6,7 @@ from flask import Flask, render_template, Response, request, json,jsonify
 from flask_cors import CORS
 # from requests import request
 from camera import Video
+from flask import send_file
 
 app=Flask(__name__)
 
@@ -52,6 +53,13 @@ def video():
     return Response(gen(Video()),
     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
+@app.route('/get_csv') # this is a job for GET, not POST
+def plot_csv():
+    return send_file('Attendance.csv',
+                     mimetype='text/csv',
+                     attachment_filename='Attendance.csv',
+                     as_attachment=True)
 
 
 if __name__ == "__main__":
