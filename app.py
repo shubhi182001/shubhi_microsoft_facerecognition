@@ -12,9 +12,9 @@ app=Flask(__name__)
 
 @app.route("/" , methods=["GET"])
 def api():
-    return render_template('index.html')
+    return render_template('index.html')          #rendering index.html here
 
-@app.route('/', methods=["POST"])
+@app.route('/', methods=["POST"])          #function for adding new registerations to backend
 def reg():
     name = request.form["name"] 
     imagefile= request.files['imagefile']
@@ -22,39 +22,23 @@ def reg():
     imagefile.save(image_path)
     return render_template('index.html')
 
-# def kcu():
-#     if "Implement ml" in request.form:
-#         return render_template ('camera.html')
-#     elif "Register" in request.form:
-#         return render_template('register.html')
 
 
-# @app.route('/register')
-# def register():
-#     name = request.form["name"]
-#     imagefile= request.files['imagefile']
-#     image_path = "C:/Users/dell/OneDrive/Documents/MY PROJECTS/flask-react/flask-server/ImagesAttendance./" + name+ ".jpeg"
-#     imagefile.save(image_path)
-
-
-def gen(camera):
+def gen(camera):                    #accessing camera function
     while True:
         frame=camera.get_frame()
         yield(b'--frame\r\n'
        b'Content-Type:  image/jpeg\r\n\r\n' + frame +
          b'\r\n\r\n')
          
-# @app.route('/video', methods=["GET"])
-# def vi():
-#     return render_template("camera.html")
 
-@app.route('/video')
+@app.route('/video')                  #this function returns response of final encoded images
 def video():
-    return Response(gen(Video()),
+    return Response(gen(Video()),       #gen() function is called here
     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-@app.route('/get_csv') # this is a job for GET, not POST
+@app.route('/get_csv') #for adding name and time in attendance.csv file
 def plot_csv():
     return send_file('Attendance.csv',
                      mimetype='text/csv',
